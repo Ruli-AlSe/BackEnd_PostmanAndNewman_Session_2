@@ -1,0 +1,17 @@
+{
+  "name": "BackEnd_PostmanAndNewman_Session_2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "newman run './Application/tests/Backend/collection/Assigment 2 - todoist.postman_collection.json' -e ./Application/tests/Backend/envVariables/QA.postman_environment.json",
+    "test-with-report": "newman run './Application/tests/Backend/collection/Assigment 2 - todoist.postman_collection.json' -e ./Application/tests/Backend/envVariables/QA.postman_environment.json -r htmlextra --reporter-htmlextra-export ./Application/tests/newman-report/report.html"
+  },
+  "keywords": [],
+  "author": "Raul Almanza",
+  "license": "ISC",
+  "dependencies": {
+    "newman": "^5.2.2",
+    "newman-reporter-htmlextra": "^1.20.1"
+  }
+}

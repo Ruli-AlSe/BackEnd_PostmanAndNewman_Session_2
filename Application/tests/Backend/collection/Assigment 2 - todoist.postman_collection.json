@@ -1,0 +1,1109 @@
+{
+	"info": {
+		"_postman_id": "46538196-121b-4f13-8910-361c18cee5c5",
+		"name": "Assigment 2 - todoist",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "TASKS",
+			"item": [
+				{
+					"name": "Get Active Tasks",
+					"item": [
+						{
+							"name": "Get active tasks",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.be.success;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has at least 4 tasks\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData[0].content).to.eql(\"Task #1 - TODO\");\r",
+											"    pm.expect(jsonData[1].content).to.eql(\"Task in Progress #1\");\r",
+											"    pm.expect(jsonData[2].content).to.eql(\"Task in Review #1\");\r",
+											"    pm.expect(jsonData[3].content).to.eql(\"Task Completed #1\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"The response is json schema\", function () {\r",
+											"    var jsonSchema = pm.response;\r",
+											"    pm.response.to.have.jsonSchema(jsonSchema);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}",
+									"host": [
+										"{{baseURL}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get active tasks (No token)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Body is a string when no token in header\", function () {\r",
+											"    pm.response.to.have.body(\"Empty token\\n\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is bad request with no token in header\", function () {\r",
+											"    pm.response.to.be.badRequest;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}",
+									"host": [
+										"{{baseURL}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create New Task",
+					"item": [
+						{
+							"name": "Create a new task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.be.success;\r",
+											"});\r",
+											"\r",
+											"var jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Task name should be 'Postman Task'\", function () {\r",
+											"    pm.expect(jsonData.content).to.eql(\"Postman Task\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"The response is json schema\", function () {\r",
+											"    var jsonSchema = pm.response;\r",
+											"    pm.response.to.have.jsonSchema(jsonSchema);\r",
+											"});\r",
+											"\r",
+											"pm.environment.set(\"createdTaskId\", jsonData.id);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"content\": \"Postman Task\",\r\n    \"project_id\": 2261446068,\r\n    \"section_id\": 42149721\r\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}",
+									"host": [
+										"{{baseURL}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a new task (No token)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Body is a string when no token in header\", function () {\r",
+											"    pm.response.to.have.body(\"Empty token\\n\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is bad request with no token in header\", function () {\r",
+											"    pm.response.to.be.badRequest;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"content\": \"Postman Task\",\r\n    \"project_id\": 2261446068,\r\n    \"section_id\": 42149721\r\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}",
+									"host": [
+										"{{baseURL}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a new task (No content variable)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Body is a string when no required variables in body\", function () {\r",
+											"    pm.response.to.have.body(\"Empty content\\n\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is bad request with no token in header\", function () {\r",
+											"    pm.response.to.be.badRequest;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"project_id\": 2261446068,\r\n    \"section_id\": 42149721\r\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}",
+									"host": [
+										"{{baseURL}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get An Active Task",
+					"item": [
+						{
+							"name": "Get an active task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.be.success;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Task name should be 'Task #1 - TODO'\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.content).to.eql(\"Task #1 - TODO\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"The response is json schema\", function () {\r",
+											"    var jsonSchema = pm.response;\r",
+											"    pm.response.to.have.jsonSchema(jsonSchema);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/4681868637",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"4681868637"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get an active task (No token)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Body is a string when no token in header\", function () {\r",
+											"    pm.response.to.have.body(\"Empty token\\n\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is bad request with no token in header\", function () {\r",
+											"    pm.response.to.be.badRequest;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/4681868637",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"4681868637"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get an active task (Invalid task id)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Body is a string when Invalid id\", function () {\r",
+											"    pm.response.to.have.body(\"Not Found\\n\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is bad request with no token in header\", function () {\r",
+											"    pm.response.to.be.notFound;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/1111",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"1111"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update Task",
+					"item": [
+						{
+							"name": "Update a task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.be.success;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"There is no response body\", function () {\r",
+											"    var res = (_.isEmpty(responseBody));\r",
+											"    pm.expect(res).to.be.true\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"due_string\": \"Tomorrow\",\r\n    \"priority\": 4\r\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/4681868637",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"4681868637"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update task (No token)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Body is a string when no token in header\", function () {\r",
+											"    pm.response.to.have.body(\"Empty token\\n\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is bad request with no token in header\", function () {\r",
+											"    pm.response.to.be.badRequest;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"due_string\": \"Tomorrow\",\r\n    \"priority\": 4\r\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/4681868637",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"4681868637"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update task (Invalid task id)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Body is a string when Invalid id\", function () {\r",
+											"    pm.response.to.have.body(\"Item not found\\n\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is bad request with no token in header\", function () {\r",
+											"    pm.response.to.be.badRequest;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"due_string\": \"Tomorrow\",\r\n    \"priority\": 4\r\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/1111",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"1111"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Change Task Status To Complete",
+					"item": [
+						{
+							"name": "Close a task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.be.success;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"There is no response body\", function () {\r",
+											"    var res = (_.isEmpty(responseBody));\r",
+											"    pm.expect(res).to.be.true\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/4681871680/close",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"4681871680",
+										"close"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Close a task (No token)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Body is a string when no token in header\", function () {\r",
+											"    pm.response.to.have.body(\"Empty token\\n\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is bad request with no token in header\", function () {\r",
+											"    pm.response.to.be.badRequest;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/4681868637/close",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"4681868637",
+										"close"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Close a task (Invalid task id)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"There is no response body\", function () {\r",
+											"    var res = (_.isEmpty(responseBody));\r",
+											"    pm.expect(res).to.be.true\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Status code is bad request with no token in header\", function () {\r",
+											"    pm.response.to.be.success;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/1111/close",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"1111",
+										"close"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Reopen A Task",
+					"item": [
+						{
+							"name": "Reopen a task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.be.success;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"There is no response body\", function () {\r",
+											"    var res = (_.isEmpty(responseBody));\r",
+											"    pm.expect(res).to.be.true\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/4681871680/reopen",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"4681871680",
+										"reopen"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reopen a task (No token)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Body is a string when no token in header\", function () {\r",
+											"    pm.response.to.have.body(\"Empty token\\n\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is bad request with no token in header\", function () {\r",
+											"    pm.response.to.be.badRequest;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/4681868637/reopen",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"4681868637",
+										"reopen"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reopen a task (Invalid task id)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Body is a string when Invalid id\", function () {\r",
+											"    pm.response.to.have.body(\"Item not found\\n\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is bad request with no token in header\", function () {\r",
+											"    pm.response.to.be.badRequest;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/1111/reopen",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"1111",
+										"reopen"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Delete A Task",
+					"item": [
+						{
+							"name": "Delete a task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.be.success;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"There is no response body\", function () {\r",
+											"    var res = (_.isEmpty(responseBody));\r",
+											"    pm.expect(res).to.be.true\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/{{createdTaskId}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"{{createdTaskId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a task (No token)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Body is a string when no token in header\", function () {\r",
+											"    pm.response.to.have.body(\"Empty token\\n\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is bad request with no token in header\", function () {\r",
+											"    pm.response.to.be.badRequest;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/4682075355",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"4682075355"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a task (Invalid task id)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Body is a string when Invalid id\", function () {\r",
+											"    pm.response.to.have.body(\"Item not found\\n\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is bad request with no token in header\", function () {\r",
+											"    pm.response.to.be.badRequest;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/1111",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"1111"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"",
+					"pm.test(\"Response time is less than 500ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(500);",
+					"});"
+				]
+			}
+		}
+	]
+}
